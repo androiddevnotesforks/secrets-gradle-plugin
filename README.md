@@ -12,27 +12,74 @@ class and in the Android manifest file.
 
 ## Requirements
 * Gradle-based Android project
-* Android Gradle plugin 4.1.x or newer
+* Android Gradle plugin 4.2.x
 
 ## Installation
 
-In your app-level `build.gradle` file:
+**NOTE**: Starting from v1.1.0, the plugin ID was changed to "com.google.android.libraries.mapsplatform.secrets-gradle-plugin" and the plugin is now being distributed via Google Maven (gMaven).  You can still download previous versions of the plugin from Gradle's plugin portal, but new versions will now only be distributed through gMaven.
+
+1. In your project's root `build.gradle` file:
+
+Groovy:
+```groovy
+buildscript {
+    dependencies {
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:1.3.0"
+    }
+}
+```
+
+Kotlin:
+```kotlin
+buildscript {
+    dependencies {
+        classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:1.3.0")
+    }
+}
+```
+
+2. In your app-level `build.gradle` file:
 
 Groovy:
 ```groovy
 plugins {
-    id 'com.google.android.secrets-gradle-plugin' version '1.1.0'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 ```
 
 Kotlin:
 ```groovy
 plugins {
-    id("com.google.android.secrets-gradle-plugin") version "1.1.0"
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 ```
 
 This plugin also supports library module type (`com.android.library`). Just install the plugin in your library-level `build.gradle` file and keys will be visible inside that module as well.
+
+### Snapshot Releases
+
+Snapshot releases, which are distributed via [GitHub Packages](https://github.com/orgs/google/packages?repo_name=secrets-gradle-plugin), are also available for latest fixes. To use a snapshot release, add the following repository to your project-level `build.gradle` file:
+
+Groovy:
+```groovy
+buildscript {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/google/secrets-gradle-plugin")
+            credentials {
+                username = project.findProperty("GITHUB_USER") ?: System.getenv("GITHUB_USER")
+                password = project.findProperty("GITHUB_TOKEN") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    dependencies {
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:<version>-SNAPSHOT"
+    }
+}
+```
+
+Also, see [Authenticating to GitHub Packages](https://docs.github.com/en/packages/learn-github-packages/introduction-to-github-packages#authenticating-to-github-packages).
+
 
 ## Example Usage
 

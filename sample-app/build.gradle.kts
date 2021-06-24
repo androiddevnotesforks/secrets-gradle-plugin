@@ -17,12 +17,12 @@ plugins {
     id("kotlin-android")
 
     // 1. Include the plugin
-    id("com.google.secrets_gradle_plugin") version "0.6"
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
     compileSdkVersion(30)
-    buildToolsVersion = "29.0.3"
+    buildToolsVersion = "30.0.2"
 
     defaultConfig {
         applicationId = "com.google.secrets_plugin.sample"

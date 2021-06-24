@@ -25,9 +25,9 @@ java {
 }
 
 dependencies {
-    compileOnly("com.android.tools.build:gradle:4.1.1")
+    compileOnly("com.android.tools.build:gradle:4.2.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
-    testImplementation("com.android.tools.build:gradle:4.1.1")
+    testImplementation("com.android.tools.build:gradle:4.2.1")
     testImplementation("junit:junit:4.13.1")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
@@ -35,21 +35,23 @@ dependencies {
 gradlePlugin {
     plugins {
         create(PluginInfo.name) {
-            id = "${PluginInfo.group}.${PluginInfo.artifactId}"
+            id = PluginInfo.group
             implementationClass = PluginInfo.implementationClass
+            displayName = PluginInfo.displayName
+            description = PluginInfo.description
         }
     }
 }
 
 pluginBundle {
-    website = "https://github.com/google/secrets-gradle-plugin"
-    vcsUrl = "https://github.com/google/secrets-gradle-plugin"
-    description = "A Gradle plugin for providing secrets securely to an Android project."
+    website = PluginInfo.url
+    vcsUrl = PluginInfo.url
+    description = PluginInfo.description
     version = PluginInfo.version
 
     (plugins) {
         PluginInfo.name {
-            displayName = "Secrets Gradle Plugin for Android"
+            displayName = PluginInfo.displayName
             tags = listOf("kotlin", "android")
         }
     }
@@ -61,17 +63,53 @@ publishing {
             group = PluginInfo.group
             artifactId = PluginInfo.artifactId
             version = PluginInfo.version
+
+            pom {
+                name.set(PluginInfo.artifactId)
+                description.set(PluginInfo.description)
+                url.set(PluginInfo.url)
+
+                scm {
+                    connection.set("scm:git@github.com:google/secrets-gradle-plugin.git")
+                    developerConnection.set("scm:git@github.com:google/secrets-gradle-plugin.git")
+                    url.set(PluginInfo.url)
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                organization {
+                    name.set("Google Inc.")
+                    url.set("https://developers.google.com/maps")
+                }
+
+
+                developers {
+                    developer {
+                        name.set("Google Inc.")
+                    }
+                }
+            }
         }
     }
     repositories {
         maven(url = "build/repository")
+        mavenLocal()
     }
 }
 
 object PluginInfo {
-    const val group = "com.google.android"
-    const val artifactId = "secrets-gradle-plugin"
+    const val artifactId = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin.gradle.plugin"
+    const val description = "A Gradle plugin for providing secrets securely to an Android project."
+    const val displayName = "Secrets Gradle Plugin for Android"
+    const val group = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
+    const val implementationClass = "com.google.android.libraries.mapsplatform.secrets_gradle_plugin.SecretsPlugin"
     const val name = "secretsGradlePlugin"
-    const val version = "1.1.0"
-    const val implementationClass = "com.google.android.secrets_gradle_plugin.SecretsPlugin"
+    const val url = "https://github.com/google/secrets-gradle-plugin"
+    const val version = "1.3.0"
 }
